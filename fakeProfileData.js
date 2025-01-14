@@ -34,4 +34,19 @@ async function generateFakeProfiles() {
     }
 }
 
-generateFakeProfiles();
+// generateFakeProfiles();
+async function insertInTimezones(){
+    console.log("here");
+    const uri = process.env.MONGODB_URI;
+    const client = new MongoClient(uri);
+    const myDB = client.db("trueCallerDB");
+    const myColl = myDB.collection("timeZones");
+    const timezonesList = Intl.supportedValuesOf('timeZone');
+    console.log(timezonesList);
+    let docs = [];
+    for (i=0;i<timezonesList.length;i++){
+        docs.push({timezone:timezonesList[i]});
+    }
+    await myColl.insertMany(docs);
+}   
+insertInTimezones();
